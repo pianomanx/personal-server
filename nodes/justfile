@@ -1,0 +1,41 @@
+# Ansible runner — one recipe per node.
+# Each node has its own playbook.yml; site.yml runs them all.
+#
+#   just                      # list recipes
+#   just server               # provision the 'server' node
+#   just server --check       # dry-run
+#   just router --tags wireguard
+#   just all                  # run every node (site.yml)
+
+# extra args are forwarded to ansible-playbook (e.g. --check, --tags x, -v)
+
+_default:
+    @just --list
+
+# Run every node's playbook (site.yml)
+all *ARGS:
+    ansible-playbook site.yml {{ARGS}}
+
+k3s *ARGS:
+    ansible-playbook k3s/playbook.yml {{ARGS}}
+
+toybox *ARGS:
+    ansible-playbook toybox/playbook.yml {{ARGS}}
+
+mail *ARGS:
+    ansible-playbook mail/playbook.yml {{ARGS}}
+
+dns *ARGS:
+    ansible-playbook dns/playbook.yml {{ARGS}}
+
+server *ARGS:
+    ansible-playbook server/playbook.yml {{ARGS}}
+
+proxmox *ARGS:
+    ansible-playbook proxmox/playbook.yml {{ARGS}}
+
+router *ARGS:
+    ansible-playbook router/playbook.yml {{ARGS}}
+
+laptop *ARGS:
+    ansible-playbook laptop/playbook.yml {{ARGS}}
